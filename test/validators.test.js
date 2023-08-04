@@ -36,6 +36,7 @@ describe('Validators', () => {
         'invalid.com',
         '@invalid.com',
         'foo@bar.com.',
+        'foo@_bar.com',
         'somename@ｇｍａｉｌ.com',
         'foo@bar.co.uk.',
         'z@co.c',
@@ -66,6 +67,9 @@ describe('Validators', () => {
         '"wrong()[]",:;<>@@gmail.com',
         'username@domain.com�',
         'username@domain.com©',
+        'nbsp test@test.com',
+        'nbsp_test@te st.com',
+        'nbsp_test@test.co m',
       ],
     });
   });
@@ -89,6 +93,16 @@ describe('Validators', () => {
     });
   });
 
+  it('should validate email addresses with underscores in the domain', () => {
+    test({
+      validator: 'isEmail',
+      args: [{ allow_underscores: true }],
+      valid: [
+        'foobar@my_sarisari_store.typepad.com',
+      ],
+      invalid: [],
+    });
+  });
 
   it('should validate email addresses without UTF8 characters in local part', () => {
     test({
@@ -117,6 +131,7 @@ describe('Validators', () => {
         'hans.m端ller@test.com',
         'z@co.c',
         'tüst@invalid.com',
+        'nbsp test@test.com',
       ],
     });
   });
@@ -4716,10 +4731,11 @@ describe('Validators', () => {
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb3JlbSI6Imlwc3VtIn0.ymiJSsMJXR6tMSr8G9usjQ15_8hKPDv_CArLhxw28MI',
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkb2xvciI6InNpdCIsImFtZXQiOlsibG9yZW0iLCJpcHN1bSJdfQ.rRpe04zbWbbJjwM43VnHzAboDzszJtGrNsUxaqQ-GQ8',
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqb2huIjp7ImFnZSI6MjUsImhlaWdodCI6MTg1fSwiamFrZSI6eyJhZ2UiOjMwLCJoZWlnaHQiOjI3MH19.YRLPARDmhGMC3BBk_OhtwwK21PIkVCqQe8ncIRPKo-E',
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ', // No signature
       ],
       invalid: [
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NSIsIm5hbWUiOiJKb2huIERvZSIsImlhdCI6MTUxNjIzOTAyMn0',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NSIsIm5hbWUiOiJKb2huIERvZSIsImlhdCI6MTYxNjY1Mzg3Mn0.eyJpc3MiOiJodHRwczovL2V4YW1wbGUuY29tIiwiaWF0IjoxNjE2NjUzODcyLCJleHAiOjE2MTY2NTM4ODJ9.a1jLRQkO5TV5y5ERcaPAiM9Xm2gBdRjKrrCpHkGr_8M',
         '$Zs.ewu.su84',
         'ks64$S/9.dy$§kz.3sd73b',
       ],
@@ -5241,6 +5257,7 @@ describe('Validators', () => {
         'LB92000700000000123123456123',
         'IR200170000000339545727003',
         'MZ97123412341234123412341',
+        'MA64011519000001205000534921',
       ],
       invalid: [
         'XX22YYY1234567890123',
@@ -6929,6 +6946,24 @@ describe('Validators', () => {
           '+9665626626262',
           '+96633221097',
           '0114152198',
+        ],
+      },
+      {
+        locale: 'ar-SD',
+        valid: [
+          '0128652312',
+          '+249919425113',
+          '249123212345',
+          '0993212345',
+        ],
+        invalid: [
+          '12345',
+          '',
+          '+249972662622',
+          '+24946266262',
+          '+24933221097',
+          '0614152198',
+          '096554',
         ],
       },
       {
@@ -8737,6 +8772,7 @@ describe('Validators', () => {
           '+48 56 6572724',
           '+48 67 621 5461',
           '48 67 621 5461',
+          '+48 45 621 5461',
         ],
         invalid: [
           '+48  67 621 5461',
@@ -8747,6 +8783,7 @@ describe('Validators', () => {
           '1800-88-8687',
           '+6019-5830837',
           '357562855',
+          '+48 44 621 5461',
         ],
       },
       {
